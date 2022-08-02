@@ -1,18 +1,25 @@
 import asyncio
 import widget as Take
+import pandas as pd
 
+colunas = ['Telefone', 'Nome', 'Conta', 'Calendly', 'Assessor', 'CodAssessor', 'Email']
+
+df = pd.read_csv('disparo2_cr_2903.csv',
+                 skipinitialspace=True, usecols=colunas)
 
 async def ContatoBlip():
-    widget = Take.Widget(authorizationKey='Key',
-                         telefone='5511999999999',
-                         calendly="https://calendly.com/pt",
-                         nome="Nome do usuário",
-                         conta="123456",
-                         assessor="Nome do Assessor",
-                         codAssessor="45",
-                         email="email@example.com")
+    for index, row in df.iterrows():
+        widget = Take.Widget(authorizationKey='Key aqui', #Chave do Bot Router
+                             telefone=row.Telefone,
+                             nome=row.Nome,
+                             conta=row.Conta,
+                             calendly=row.Calendly,
+                             assessor=row.Assessor,
+                             codAssessor=row.CodAssessor,
+                             email=row.Email) 
+        
 
-    await widget.UpdateOrCreate()
+        await widget.UpdateOrCreate()
 
 
 asyncio.run(ContatoBlip())
